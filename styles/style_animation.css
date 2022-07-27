@@ -1,0 +1,107 @@
+.anim_spawn
+{
+	animation-duration: 0.5s;
+	animation-name: spawn;
+}
+
+@keyframes spawn {
+  from {
+    opacity: 0.1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.anim_move_top
+{
+	animation-duration: 0.3s;
+	animation-name: move_top;
+}
+
+@keyframes move_top
+{
+	from{
+		opacity: 1;
+	}
+
+	50%{
+		transform: translate(0,-70px);
+		opacity: 0.5;
+	}
+
+	to{
+		transform: translate(0,-120px);
+		opacity: 0.1;
+	}
+}
+
+.anim_move_bottom
+{
+	animation-duration: 0.3s;
+	animation-name: move_bottom;
+}
+
+@keyframes move_bottom
+{
+	from{
+		opacity: 1;
+	}
+
+	50%{
+		transform: translate(0,70px);
+		opacity: 0.5;
+	}
+
+	to{
+		transform: translate(0,120px);
+		opacity: 0.1;
+	}
+}
+
+.anim_move_left
+{
+	animation-duration: 0.3s;
+	animation-name: move_left;
+}
+
+@keyframes move_left
+{
+	from{
+		opacity: 1;
+	}
+
+	50%{
+		transform: translate(-70px,0px);
+		opacity: 0.5;
+	}
+
+	to{
+		transform: translate(-120px,0px);
+		opacity: 0.1;
+	}
+}
+
+.anim_move_right
+{
+	animation-duration: 0.3s;
+	animation-name: move_right;
+}
+
+@keyframes move_right
+{
+	from{
+		opacity: 1;
+	}
+
+	50%{
+		transform: translate(70px,0px);
+		opacity: 0.5;
+	}
+
+	to{
+		transform: translate(120px,0px);
+		opacity: 0.1;
+	}
+}

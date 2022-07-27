@@ -21,6 +21,7 @@ function GetStartValue()
 	LbxScope[0].innerHTML = Scope;
 	ClearGameMap();
 
+
 	for (var i = GameMap.length - 1; i >= 0; i--) {
 		for (var j = 0; j < 4; j++) {
 			GameMap[i][j] = -1;
@@ -59,7 +60,7 @@ function GetStartValue()
 
 			ValueArray[num].innerHTML = 2;
 			CelsArray[num].style.background = '#ffff66';
-			console.log(num);
+			CelsArray[num].classList.add("anim_move_top");
 		}
 		else
 		{
@@ -77,6 +78,16 @@ function ClearGameMap()
 	{
 		ValueArray[i].innerHTML = '';
 		CelsArray[i].style.background = '#ffffff';
+
+		/*
+		try{
+			CelsArray[i].classList.remove("anim_move_top");
+		}
+		catch
+		{
+			console.log('not found');
+		}
+		*/
 	}
 }
 
