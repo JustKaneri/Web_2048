@@ -31,15 +31,18 @@ document.addEventListener('keyup', function(event){
     	break;
 
     	case 'ArrowDown':
-    		MoveLeft();
+    		DeleteAnimationClass('anim_move_bottom');
+    		IsMove = MoveBottom();
     	break;
 
     	case 'ArrowLeft':
-    		MoveLeft();
+    		DeleteAnimationClass('anim_move_left')
+    		IsMove = MoveLeft();
     	break;
 
     	case 'ArrowRight':
-    		MoveRight();
+    		DeleteAnimationClass('anim_move_right')
+    		IsMove = MoveRight();
     	break;
     }
 
@@ -83,7 +86,7 @@ function GetStartValue()
 
 			console.log('класс добавлен: '+num)
 			ValueArray[num].innerHTML = 2;
-			ValueArray[num].style.background = '#ffff66';
+			ValueArray[num].style.background = GetColor(2);
 			void ValueArray[num].offsetWidth;
 			ValueArray[num].classList.add("anim_spawn");
 		}
@@ -112,7 +115,7 @@ function Spawn()
 
 			console.log('класс добавлен: '+num)
 			ValueArray[num].innerHTML = 2;
-			ValueArray[num].style.background = '#ffff66';
+			ValueArray[num].style.background = GetColor(2);
 			
 
 			NotCreate = false;
@@ -125,7 +128,7 @@ function ClearGameMap()
 	for(var i = 0; i < ValueArray.length; i++)
 	{
 		ValueArray[i].innerHTML = '';
-		ValueArray[i].style.background = '#ffffff';
+		ValueArray[i].style.background = GetColor(-1);
 	}
 }
 
@@ -197,19 +200,19 @@ function MoveTop()
 			var i = row;
 			while(i != 0){
 				if(GameMap[i-1][column] == -1){
-					GameMap[i-1][column] = 2;
+					GameMap[i-1][column] = GameMap[i][column];
 
 				    var num	= GetNumCells(column,i-1);
 
-					ValueArray[num].innerHTML = 2;
-					ValueArray[num].style.background = '#ffff66';
+					ValueArray[num].innerHTML = GameMap[i][column];
+					ValueArray[num].style.background = GetColor(GameMap[i][column]);
 					void ValueArray[num].offsetWidth;
 
 					GameMap[i][column] = -1;
 
 					var oldNum = GetNumCells(column,i);
 					ValueArray[oldNum].innerHTML = '';
-					ValueArray[oldNum].style.background = '#ffffff';
+					ValueArray[oldNum].style.background = GetColor(-1);
 
 					IsMove = true;
 				}
@@ -225,7 +228,7 @@ function MoveTop()
 				   			var num = GetNumCells(column,i-1);
 
 							ValueArray[num].innerHTML = GameMap[i-1][column];
-							ValueArray[num].style.background = '#ffff66';
+							ValueArray[num].style.background = GetColor(GameMap[i-1][column]);
 							void ValueArray[num].offsetWidth;
 
 							GameMap[i][column] = -1;
@@ -234,7 +237,7 @@ function MoveTop()
 							void ValueArray[oldNum].offsetWidth;
 							ValueArray[oldNum].classList.add('anim_move_top');
 							ValueArray[oldNum].innerHTML = '';
-							ValueArray[oldNum].style.background = '#ffffff'; 
+							ValueArray[oldNum].style.background = GetColor(-1); 
 							
 							IsMove = true;
 
@@ -253,15 +256,250 @@ function MoveTop()
 
 function MoveBottom()
 {
+	var IsMove = false;
 
+	for(var row = 2; row >= 0; row--){
+		for(var column = 0; column < 4; column++){
+			if(GameMap[row][column] == -1){
+				continue;
+			}
+
+			var i = row;
+			while(i != 3){
+				if(GameMap[i+1][column] == -1){
+					GameMap[i+1][column] = GameMap[i][column];
+
+				    var num	= GetNumCells(column,i+1);
+
+					ValueArray[num].innerHTML = GameMap[i][column];
+					ValueArray[num].style.background = GetColor(GameMap[i][column]);
+					void ValueArray[num].offsetWidth;
+
+					GameMap[i][column] = -1;
+
+					var oldNum = GetNumCells(column,i);
+					ValueArray[oldNum].innerHTML = '';
+					ValueArray[oldNum].style.background = GetColor(-1);
+
+					IsMove = true;
+				}
+
+				if(GameMap[i+1][column] > -1){
+					if(GameMap[i+1][column] == GameMap[i][column]){
+						if(GameMapSum[i][column] == false){
+							Scope += GameMap[i][column]*2;
+							LbxScope[0].innerHTML = Scope;
+
+							GameMap[i+1][column] = GameMap[i+1][column] * 2;
+							GameMapSum[i+1][column] = true;
+				   			var num = GetNumCells(column,i+1);
+
+							ValueArray[num].innerHTML = GameMap[i+1][column];
+							ValueArray[num].style.background = GetColor(GameMap[i+1][column]);
+							void ValueArray[num].offsetWidth;
+
+							GameMap[i][column] = -1;
+
+							var oldNum = GetNumCells(column,i);
+							void ValueArray[oldNum].offsetWidth;
+							ValueArray[oldNum].classList.add('anim_move_bottom');
+							ValueArray[oldNum].innerHTML = '';
+							ValueArray[oldNum].style.background = GetColor(-1); 
+							
+							IsMove = true;
+						}
+					}
+				}
+				i++;
+			}	
+		}
+	}
+
+	return IsMove;
 }
 
 function MoveLeft() 
 {
+	var IsMove = false;
 
+	for(var row = 0; row < 4; row++){
+		for(var column = 1; column < 4; column++){
+			if(GameMap[row][column] == -1){
+				continue;
+			}
+
+			var i = column;
+			while(i != 0){
+				if(GameMap[row][i-1] == -1){
+					GameMap[row][i-1] = GameMap[row][i];
+
+				    var num	= GetNumCells(i-1,row);
+
+					ValueArray[num].innerHTML = GameMap[row][i];
+					ValueArray[num].style.background = GetColor(GameMap[row][i]);
+					void ValueArray[num].offsetWidth;
+
+					GameMap[row][i] = -1;
+
+					var oldNum = GetNumCells(i,row);
+					ValueArray[oldNum].innerHTML = '';
+					ValueArray[oldNum].style.background = GetColor(-1);
+
+					IsMove = true;
+				}
+				
+				if(GameMap[row][i-1] > -1){
+					if(GameMap[row][i-1] == GameMap[row][i]){
+						if(GameMapSum[row][i] == false){
+							Scope += GameMap[row][i]*2;
+							LbxScope[0].innerHTML = Scope;
+
+							GameMap[row][i-1] = GameMap[row][i-1] * 2;
+							GameMapSum[row][i-1] = true;
+				   			var num = GetNumCells(i-1,row);
+
+							ValueArray[num].innerHTML = GameMap[row][i-1];
+							ValueArray[num].style.background = GetColor(GameMap[row][i-1]);
+							void ValueArray[num].offsetWidth;
+
+							GameMap[row][i] = -1;
+
+							var oldNum = GetNumCells(i,row);
+							void ValueArray[oldNum].offsetWidth;
+							ValueArray[oldNum].classList.add('anim_move_left');
+							ValueArray[oldNum].innerHTML = '';
+							ValueArray[oldNum].style.background = GetColor(-1); 
+							
+							IsMove = true;
+						}
+					}
+				}
+				
+				i--;
+			}	
+		}
+	}
+
+	return IsMove;
 }
 
 function MoveRight()
 {
+	var IsMove = false;
 
+	for(var row = 0; row < 4; row++){
+		for(var column = 2; column >= 0; column--){
+			if(GameMap[row][column] == -1){
+				continue;
+			}
+
+			var i = column;
+			while(i != 3){
+				if(GameMap[row][i+1] == -1){
+					GameMap[row][i+1] = GameMap[row][i];
+
+				    var num	= GetNumCells(i+1,row);
+
+					ValueArray[num].innerHTML = GameMap[row][i];
+					ValueArray[num].style.background = GetColor(GameMap[row][i]);
+					void ValueArray[num].offsetWidth;
+
+					GameMap[row][i] = -1;
+
+					var oldNum = GetNumCells(i,row);
+					ValueArray[oldNum].innerHTML = '';
+					ValueArray[oldNum].style.background = GetColor(-1);
+
+					IsMove = true;
+				}
+				
+				if(GameMap[row][i+1] > -1){
+					if(GameMap[row][i+1] == GameMap[row][i]){
+						if(GameMapSum[row][i] == false){
+							Scope += GameMap[row][i]*2;
+							LbxScope[0].innerHTML = Scope;
+
+							GameMap[row][i+1] = GameMap[row][i] * 2;
+							GameMapSum[row][i+1] = true;
+				   			var num = GetNumCells(i+1,row);
+
+							ValueArray[num].innerHTML = GameMap[row][i+1];
+							ValueArray[num].style.background = GetColor(GameMap[row][i+1]);
+							void ValueArray[num].offsetWidth;
+
+							GameMap[row][i] = -1;
+
+							var oldNum = GetNumCells(i,row);
+							void ValueArray[oldNum].offsetWidth;
+							ValueArray[oldNum].classList.add('anim_move_right');
+							ValueArray[oldNum].innerHTML = '';
+							ValueArray[oldNum].style.background = GetColor(-1); 
+							
+							IsMove = true;
+						}
+					}
+				}
+				
+				i++;
+			}	
+		}
+	}
+
+	return IsMove;
+}
+
+
+function GetColor(value)
+{
+	switch(value)
+	{
+		case -1:
+			return '#ffffff';
+		break;
+
+		case 2:
+			return '#ffff66';
+		break;
+
+		case 4:
+			return '#f4f276';
+		break;
+
+		case 8:
+			return '#e8e584';
+		break;
+
+		case 16:
+			return '#dcd891';
+		break;
+
+		case 32:
+			return '#cfcc9d';
+		break;
+
+		case 64:
+			return '#c2bfa8';
+		break;
+
+		case 128:
+			return '#b3b3b3';
+		break;
+
+		case 256:
+			return '#caf2b7';
+		break;
+
+		case 512:
+			return '#b2eed0';
+		break;
+
+		case 1024:
+			return '#93eae7';
+		break;
+
+		case 2048:
+			return '#66e6ff';
+		break;
+
+	}
 }
