@@ -122,6 +122,11 @@ body
 .game_map__cels-value
 {
   	font-size: 2em;
+  	font-size: 2em;
+    width: 100%;
+    height: 75%;
+    text-align: center;
+    padding-top: 25%;
 }
 
 @media screen and (max-width: 810px)

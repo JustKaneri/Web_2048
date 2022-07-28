@@ -16,7 +16,7 @@
 
 .anim_move_top
 {
-	animation-duration: 0.3s;
+	animation-duration: 0.5s;
 	animation-name: move_top;
 }
 
@@ -28,7 +28,12 @@
 
 	50%{
 		transform: translate(0,-70px);
-		opacity: 0.5;
+		opacity: 0.6;
+	}
+
+	75%{
+		transform: translate(0,-100px);
+		opacity: 0.3;
 	}
 
 	to{

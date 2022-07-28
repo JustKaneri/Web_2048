@@ -4,15 +4,56 @@ var GameMap = [[-1,-1,-1,-1],
 			   [-1,-1,-1,-1],
 			   [-1,-1,-1,-1]];
 
+var GameMapSum = [[false,false,false,false],
+				  [false,false,false,false],
+				  [false,false,false,false],
+				  [false,false,false,false]];
+
 
 var LbxScope = document.getElementsByClassName('main_ui__label_scope');
 var ValueArray = document.getElementsByClassName("game_map__cels-value");
-var CelsArray = document.getElementsByClassName("game_map__row-cels");
-
-LbxScope[0].innerHTML = "404";
-
 var ResetBtn = document.getElementsByClassName("main_ui-reset");
+
 ResetBtn.onclick = GetStartValue();
+
+document.addEventListener('keyup', function(event){
+
+	ClearIsNew();
+	DeleteAnimationClass('anim_spawn')
+	var IsMove = false;
+
+    switch(event.key)
+    {
+    	case 'ArrowUp':
+    		DeleteAnimationClass('anim_move_top');
+    	 	IsMove = MoveTop();
+    	 
+    	break;
+
+    	case 'ArrowDown':
+    		MoveLeft();
+    	break;
+
+    	case 'ArrowLeft':
+    		MoveLeft();
+    	break;
+
+    	case 'ArrowRight':
+    		MoveRight();
+    	break;
+    }
+
+    if(IsMove){
+    	Spawn();
+    }
+    
+});
+
+window.addEventListener("keydown", function(e) {
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+}, false);
 
 
 function GetStartValue()
@@ -20,11 +61,13 @@ function GetStartValue()
 	Scope = 0;
 	LbxScope[0].innerHTML = Scope;
 	ClearGameMap();
+	DeleteAnimationClass('anim_spawn')
 
 
 	for (var i = GameMap.length - 1; i >= 0; i--) {
 		for (var j = 0; j < 4; j++) {
 			GameMap[i][j] = -1;
+			GameMapSum[i][j] = false;
 		}
 	}
 
@@ -34,42 +77,47 @@ function GetStartValue()
 
 		if(GameMap[rndY][rndX] != 2)
 		{
-			console.log(GameMap[rndY][rndX] == 2)
 			GameMap[rndY][rndX] =  2;
 
-			var num = 0;
+			var num = GetNumCells(rndX,rndY);
 
-			switch(rndY)
-			{
-				case 0: 
-					num = rndX; 
-				break;
-
-				case 1:
-					num = 4 + rndX;
-				break;
-
-				case 2:
-					num = 8 + rndX;
-				break;
-
-				case 3:
-					num = 12 + rndX;
-				break;
-			}
-
+			console.log('класс добавлен: '+num)
 			ValueArray[num].innerHTML = 2;
-			CelsArray[num].style.background = '#ffff66';
-			CelsArray[num].classList.add("anim_move_top");
+			ValueArray[num].style.background = '#ffff66';
+			void ValueArray[num].offsetWidth;
+			ValueArray[num].classList.add("anim_spawn");
 		}
 		else
 		{
 			z-=1;
 		}
-
-		
 	}
-	
+
+}
+
+function Spawn()
+{
+	var NotCreate = true;
+
+	while(NotCreate){
+
+		var rndX = Math.floor(Math.random()*4);
+		var rndY = Math.floor(Math.random()*4);
+
+		if(GameMap[rndY][rndX] == -1)
+		{
+			GameMap[rndY][rndX] =  2;
+
+			var num = GetNumCells(rndX,rndY);
+
+			console.log('класс добавлен: '+num)
+			ValueArray[num].innerHTML = 2;
+			ValueArray[num].style.background = '#ffff66';
+			
+
+			NotCreate = false;
+		}
+	}
 }
 
 function ClearGameMap()
@@ -77,24 +125,129 @@ function ClearGameMap()
 	for(var i = 0; i < ValueArray.length; i++)
 	{
 		ValueArray[i].innerHTML = '';
-		CelsArray[i].style.background = '#ffffff';
-
-		/*
-		try{
-			CelsArray[i].classList.remove("anim_move_top");
-		}
-		catch
-		{
-			console.log('not found');
-		}
-		*/
+		ValueArray[i].style.background = '#ffffff';
 	}
 }
 
+function DeleteAnimationClass(nameClass)
+{
+	for(var i = 0; i < ValueArray.length; i++)
+	{
+		if(ValueArray[i].classList.contains(nameClass))
+		{
+			console.log('класс удален: '+ i);
+			try{
+				ValueArray[i].classList.remove(nameClass);
+			}
+			catch
+			{
+				console.log('not found');
+			}
+		}
+	}
+
+	console.log('__________________________');	
+}
+
+function GetNumCells(x,y)
+{
+	var num = 0;
+
+	switch(y)
+	{
+		case 0: 
+			num = x; 
+		break;
+
+		case 1:
+			num = 4 + x;
+		break;
+
+		case 2:
+			num = 8 + x;
+		break;
+
+		case 3:
+			num = 12 + x;
+		break;
+	}
+
+	return num;
+}
+
+function ClearIsNew()
+{
+	for(var row = 0; row < 4; row++){
+		for(var column = 0; column < 4; column++){
+			GameMapSum[row][column] = false;
+		}
+	}
+}
 
 function MoveTop()
-{
+{	
+	var IsMove = false;
 
+	for(var row = 1; row < 4; row++){
+		for(var column = 0; column < 4; column++){
+			if(GameMap[row][column] == -1){
+				continue;
+			}
+
+			var i = row;
+			while(i != 0){
+				if(GameMap[i-1][column] == -1){
+					GameMap[i-1][column] = 2;
+
+				    var num	= GetNumCells(column,i-1);
+
+					ValueArray[num].innerHTML = 2;
+					ValueArray[num].style.background = '#ffff66';
+					void ValueArray[num].offsetWidth;
+
+					GameMap[i][column] = -1;
+
+					var oldNum = GetNumCells(column,i);
+					ValueArray[oldNum].innerHTML = '';
+					ValueArray[oldNum].style.background = '#ffffff';
+
+					IsMove = true;
+				}
+
+				if(GameMap[i-1][column] > -1){
+					if(GameMap[i-1][column] == GameMap[i][column]){
+						if(GameMapSum[i][column] == false){
+							Scope += GameMap[i][column]*2;
+							LbxScope[0].innerHTML = Scope;
+
+							GameMap[i-1][column] = GameMap[i-1][column] * 2;
+							GameMapSum[i-1][column] = true;
+				   			var num = GetNumCells(column,i-1);
+
+							ValueArray[num].innerHTML = GameMap[i-1][column];
+							ValueArray[num].style.background = '#ffff66';
+							void ValueArray[num].offsetWidth;
+
+							GameMap[i][column] = -1;
+
+							var oldNum = GetNumCells(column,i);
+							void ValueArray[oldNum].offsetWidth;
+							ValueArray[oldNum].classList.add('anim_move_top');
+							ValueArray[oldNum].innerHTML = '';
+							ValueArray[oldNum].style.background = '#ffffff'; 
+							
+							IsMove = true;
+
+							
+						}
+					}
+				}
+				i--;
+			}	
+		}
+	}
+
+	return IsMove;
 }
 
 
