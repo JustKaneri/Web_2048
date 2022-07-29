@@ -4,12 +4,6 @@ var GameMap = [[-1,-1,-1,-1],
 			   [-1,-1,-1,-1],
 			   [-1,-1,-1,-1]];
 
-var GameMapSum = [[false,false,false,false],
-				  [false,false,false,false],
-				  [false,false,false,false],
-				  [false,false,false,false]];
-
-
 var LbxScope = document.getElementsByClassName('main_ui__label_scope');
 var ValueArray = document.getElementsByClassName("game_map__cels-value");
 var ResetBtn = document.getElementsByClassName("main_ui-reset");
@@ -18,8 +12,6 @@ ResetBtn.onclick = GetStartValue();
 
 document.addEventListener('keyup', function(event){
 
-	ClearIsNew();
-	DeleteAnimationClass('anim_spawn')
 	var IsMove = false;
 
     switch(event.key)
@@ -27,7 +19,6 @@ document.addEventListener('keyup', function(event){
     	case 'ArrowUp':
     		DeleteAnimationClass('anim_move_top');
     	 	IsMove = MoveTop();
-    	 
     	break;
 
     	case 'ArrowDown':
@@ -46,9 +37,7 @@ document.addEventListener('keyup', function(event){
     	break;
     }
 
-    if(IsMove){
-    	Spawn();
-    }
+    
     
 });
 
@@ -70,7 +59,6 @@ function GetStartValue()
 	for (var i = GameMap.length - 1; i >= 0; i--) {
 		for (var j = 0; j < 4; j++) {
 			GameMap[i][j] = -1;
-			GameMapSum[i][j] = false;
 		}
 	}
 
@@ -102,6 +90,8 @@ function Spawn()
 {
 	var NotCreate = true;
 
+	DeleteAnimationClass('anim_spawn')
+
 	while(NotCreate){
 
 		var rndX = Math.floor(Math.random()*4);
@@ -116,6 +106,8 @@ function Spawn()
 			console.log('класс добавлен: '+num)
 			ValueArray[num].innerHTML = 2;
 			ValueArray[num].style.background = GetColor(2);
+			void ValueArray[num].offsetWidth;
+			ValueArray[num].classList.add("anim_spawn");
 			
 
 			NotCreate = false;
@@ -187,8 +179,78 @@ function ClearIsNew()
 	}
 }
 
-function MoveTop()
+
+async function MoveTop(){
+	for(var col = 0; col < 4; col++){
+		var OneColm = GameMap.map(function(value,index){
+			if(value[col] > -1) return value[col];
+		});
+
+		if(OneColm.filter(function(value,index){return value != undefined;}).length == 0){
+			continue;
+		}
+
+		for(var row = 1; row < 3 ; row++){
+			
+			OneColm = OneColm.filter(function(value,index){return value > -1});
+
+			OneColm = SummValue(OneColm,row);
+
+			OneColm = AddValueOnColumn(OneColm);
+		}
+
+		OneColm = OneColm.filter(function(value,index){return value > -1});
+		OneColm = AddValueOnColumn(OneColm);
+
+		for(var r = 0; r < 4; r ++){
+			GameMap[r][col] = OneColm[r];
+		}
+
+		UpdateMapUI(OneColm,col,row);
+	}
+}
+
+function AddValueOnColumn(OneColm){
+	while(OneColm.length != 4){
+		OneColm.push(-1);
+	}
+
+	return OneColm;
+}
+
+function SummValue(OneColm, index){
+
+	if(OneColm[index] == OneColm[index-1]){
+		OneColm[index-1] = OneColm[index]*2;
+		OneColm[index] = -1;
+	}
+
+	return OneColm;
+}
+
+async function UpdateMapUI(array,column,row,anim_name)
+{
+	var num	= GetNumCells(column,row);
+	ValueArray[num].innerHTML = GameMap[row][column];
+	ValueArray[num].style.background = GetColor(GameMap[row][column]);
+	void ValueArray[num].offsetWidth;
+
+	await new Promise(r => setTimeout(r, 20));
+	GameMap[row][column] = -1;
+
+	var oldNum = GetNumCells(column,row);
+	void ValueArray[oldNum].offsetWidth;
+	ValueArray[oldNum].classList.add(anim_name);
+	ValueArray[oldNum].innerHTML = '';
+	ValueArray[oldNum].style.background = GetColor(-1); 
+}
+
+
+/*
+async function MoveTop()
 {	
+	ClearIsNew();
+	DeleteAnimationClass('anim_spawn')
 	var IsMove = false;
 
 	for(var row = 1; row < 4; row++){
@@ -208,18 +270,20 @@ function MoveTop()
 					ValueArray[num].style.background = GetColor(GameMap[i][column]);
 					void ValueArray[num].offsetWidth;
 
+					await new Promise(r => setTimeout(r, 20));
 					GameMap[i][column] = -1;
 
 					var oldNum = GetNumCells(column,i);
 					ValueArray[oldNum].innerHTML = '';
 					ValueArray[oldNum].style.background = GetColor(-1);
+					
 
 					IsMove = true;
 				}
 
 				if(GameMap[i-1][column] > -1){
 					if(GameMap[i-1][column] == GameMap[i][column]){
-						if(GameMapSum[i][column] == false){
+						if(GameMapSum[i-1][column] == false){
 							Scope += GameMap[i][column]*2;
 							LbxScope[0].innerHTML = Scope;
 
@@ -231,6 +295,7 @@ function MoveTop()
 							ValueArray[num].style.background = GetColor(GameMap[i-1][column]);
 							void ValueArray[num].offsetWidth;
 
+							await new Promise(r => setTimeout(r, 20));
 							GameMap[i][column] = -1;
 
 							var oldNum = GetNumCells(column,i);
@@ -238,6 +303,7 @@ function MoveTop()
 							ValueArray[oldNum].classList.add('anim_move_top');
 							ValueArray[oldNum].innerHTML = '';
 							ValueArray[oldNum].style.background = GetColor(-1); 
+							
 							
 							IsMove = true;
 
@@ -250,12 +316,19 @@ function MoveTop()
 		}
 	}
 
+	if(IsMove){
+    	Spawn();
+    }
+
 	return IsMove;
 }
+*/
 
 
-function MoveBottom()
+async function MoveBottom()
 {
+	ClearIsNew();
+	DeleteAnimationClass('anim_spawn')
 	var IsMove = false;
 
 	for(var row = 2; row >= 0; row--){
@@ -275,6 +348,7 @@ function MoveBottom()
 					ValueArray[num].style.background = GetColor(GameMap[i][column]);
 					void ValueArray[num].offsetWidth;
 
+					await new Promise(r => setTimeout(r, 20));
 					GameMap[i][column] = -1;
 
 					var oldNum = GetNumCells(column,i);
@@ -286,7 +360,7 @@ function MoveBottom()
 
 				if(GameMap[i+1][column] > -1){
 					if(GameMap[i+1][column] == GameMap[i][column]){
-						if(GameMapSum[i][column] == false){
+						if(GameMapSum[i+1][column] == false){
 							Scope += GameMap[i][column]*2;
 							LbxScope[0].innerHTML = Scope;
 
@@ -298,6 +372,7 @@ function MoveBottom()
 							ValueArray[num].style.background = GetColor(GameMap[i+1][column]);
 							void ValueArray[num].offsetWidth;
 
+							await new Promise(r => setTimeout(r, 20));
 							GameMap[i][column] = -1;
 
 							var oldNum = GetNumCells(column,i);
@@ -310,16 +385,21 @@ function MoveBottom()
 						}
 					}
 				}
+
 				i++;
 			}	
 		}
 	}
 
-	return IsMove;
+	if(IsMove){
+    	Spawn();
+    }
 }
 
-function MoveLeft() 
+async function MoveLeft() 
 {
+	ClearIsNew();
+	DeleteAnimationClass('anim_spawn')
 	var IsMove = false;
 
 	for(var row = 0; row < 4; row++){
@@ -339,6 +419,7 @@ function MoveLeft()
 					ValueArray[num].style.background = GetColor(GameMap[row][i]);
 					void ValueArray[num].offsetWidth;
 
+					await new Promise(r => setTimeout(r, 20));
 					GameMap[row][i] = -1;
 
 					var oldNum = GetNumCells(i,row);
@@ -350,7 +431,7 @@ function MoveLeft()
 				
 				if(GameMap[row][i-1] > -1){
 					if(GameMap[row][i-1] == GameMap[row][i]){
-						if(GameMapSum[row][i] == false){
+						if(GameMapSum[row][i-1] == false){
 							Scope += GameMap[row][i]*2;
 							LbxScope[0].innerHTML = Scope;
 
@@ -362,6 +443,7 @@ function MoveLeft()
 							ValueArray[num].style.background = GetColor(GameMap[row][i-1]);
 							void ValueArray[num].offsetWidth;
 
+							await new Promise(r => setTimeout(r, 20));
 							GameMap[row][i] = -1;
 
 							var oldNum = GetNumCells(i,row);
@@ -374,17 +456,20 @@ function MoveLeft()
 						}
 					}
 				}
-				
 				i--;
 			}	
 		}
 	}
 
-	return IsMove;
+	if(IsMove){
+    	Spawn();
+    }
 }
 
-function MoveRight()
+async function MoveRight()
 {
+	ClearIsNew();
+	DeleteAnimationClass('anim_spawn')
 	var IsMove = false;
 
 	for(var row = 0; row < 4; row++){
@@ -404,6 +489,7 @@ function MoveRight()
 					ValueArray[num].style.background = GetColor(GameMap[row][i]);
 					void ValueArray[num].offsetWidth;
 
+					await new Promise(r => setTimeout(r, 20));
 					GameMap[row][i] = -1;
 
 					var oldNum = GetNumCells(i,row);
@@ -415,7 +501,7 @@ function MoveRight()
 				
 				if(GameMap[row][i+1] > -1){
 					if(GameMap[row][i+1] == GameMap[row][i]){
-						if(GameMapSum[row][i] == false){
+						if(GameMapSum[row][i+1] == false){
 							Scope += GameMap[row][i]*2;
 							LbxScope[0].innerHTML = Scope;
 
@@ -427,6 +513,7 @@ function MoveRight()
 							ValueArray[num].style.background = GetColor(GameMap[row][i+1]);
 							void ValueArray[num].offsetWidth;
 
+							await new Promise(r => setTimeout(r, 20));
 							GameMap[row][i] = -1;
 
 							var oldNum = GetNumCells(i,row);
@@ -445,7 +532,9 @@ function MoveRight()
 		}
 	}
 
-	return IsMove;
+	if(IsMove){
+    	Spawn();
+    }
 }
 
 
