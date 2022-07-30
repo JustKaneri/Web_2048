@@ -6,7 +6,7 @@
 
 @keyframes spawn {
   from {
-    transform: scale(1,1);
+    transform: scale(0.6,0.6);
   }
 
   50%{
@@ -18,9 +18,29 @@
   }
 }
 
-.anim_move_top
+.anim_summ
 {
 	animation-duration: 0.5s;
+	animation-name: summ;
+}
+
+@keyframes summ {
+  from {
+    transform: scale(1,1);
+  }
+
+  50%{
+  	transform: scale(1.02,1.02);
+  }
+
+  to {
+    transform: scale(1,1);
+  }
+}
+
+.anim_move_top
+{
+	animation-duration: 0.1s;
 	animation-name: move_top;
 }
 
@@ -32,17 +52,17 @@
 
 	50%{
 		transform: translate(0,-70px);
-		opacity: 0.6;
+		opacity: 1;
 	}
 
 	75%{
 		transform: translate(0,-100px);
-		opacity: 0.3;
+		opacity: 1;
 	}
 
 	to{
 		transform: translate(0,-150px);
-		opacity: 0.1;
+		opacity: 1;
 	}
 }
 

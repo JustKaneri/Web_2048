@@ -17,7 +17,7 @@
 		<div class="main_ui">
 			<label class="main_ui__label">Счет: </label>
 			<label class="main_ui__label main_ui__label_scope">0</label>
-			<button class="main_ui-reset" type="button" onclick="GetStartValue();">
+			<button class="main_ui-reset" type="button" onclick="Start();">
 				<b>Сначала</b>
 			</button>
 		</div>
@@ -26,7 +26,7 @@
 			<div class="game_map">
 				<div class="game_map__row row1">
 					<div class="game_map__row-cels">
-						<div class="game_map__cels-value">11</div>
+						<div class="game_map__cels-value"></div>
 					</div>
 					<div class="game_map__row-cels">
 						<div class="game_map__cels-value"></div>
@@ -90,6 +90,10 @@
 	</footer>
 
 
-	<script type="text/javascript" src="scripts/game_logic.js"></script>
+	<script type="text/javascript" src="scripts/color_manager.js"></script>
+	<script type="text/javascript" src="scripts/element_logic.js"></script>
+	<script type="text/javascript" src="scripts/scope_manager.js"></script>
+	<script type="text/javascript" src="scripts/game_manager.js"></script>
+
 </body>
 </html>

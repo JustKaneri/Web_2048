@@ -192,15 +192,9 @@ async function MoveTop(){
 
 		for(var row = 1; row < 3 ; row++){
 			
-			OneColm = OneColm.filter(function(value,index){return value > -1});
-
-			OneColm = SummValue(OneColm,row);
-
-			OneColm = AddValueOnColumn(OneColm);
+			
 		}
 
-		OneColm = OneColm.filter(function(value,index){return value > -1});
-		OneColm = AddValueOnColumn(OneColm);
 
 		for(var r = 0; r < 4; r ++){
 			GameMap[r][col] = OneColm[r];
@@ -227,24 +221,6 @@ function SummValue(OneColm, index){
 
 	return OneColm;
 }
-
-async function UpdateMapUI(array,column,row,anim_name)
-{
-	var num	= GetNumCells(column,row);
-	ValueArray[num].innerHTML = GameMap[row][column];
-	ValueArray[num].style.background = GetColor(GameMap[row][column]);
-	void ValueArray[num].offsetWidth;
-
-	await new Promise(r => setTimeout(r, 20));
-	GameMap[row][column] = -1;
-
-	var oldNum = GetNumCells(column,row);
-	void ValueArray[oldNum].offsetWidth;
-	ValueArray[oldNum].classList.add(anim_name);
-	ValueArray[oldNum].innerHTML = '';
-	ValueArray[oldNum].style.background = GetColor(-1); 
-}
-
 
 /*
 async function MoveTop()
