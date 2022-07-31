@@ -2,6 +2,7 @@ var GameMap = null;
 var scopeManager = new ScopeManager(0);
 var ResetBtn = document.getElementsByClassName("main_ui-reset");
 var AllCels = document.getElementsByClassName("game_map__cels-value");
+var IsPressKey = false;
 
 window.addEventListener("keydown", function(e) {
     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
@@ -15,6 +16,7 @@ function Start(){
 
 	GameMap = new Array();
 	scopeManager = new ScopeManager(0);
+	IsPressKey = false;
 
 	for(let r = 0; r < 4; r++){
 		var oneRow = new Array();
@@ -47,21 +49,29 @@ function Spawn(count){
 
 document.addEventListener('keyup', function(event){
 
-    switch(event.key)
-    {
-    	case 'ArrowUp':
-    		MoveUp();
-    	break;
+	if(IsPressKey == false){
 
-    	case 'ArrowDown':
-    	break;
+		IsPressKey = true;
 
-    	case 'ArrowLeft':
-    	break;
+		switch(event.key)
+    	{
+    		case 'ArrowUp':
+    			MoveUp();
+    		break;
 
-    	case 'ArrowRight':
-    	break;
-    }    
+    		case 'ArrowDown':
+    			MoveBottom();
+    		break;
+
+    		case 'ArrowLeft':
+    			MoveLeft();
+    		break;
+
+    		case 'ArrowRight':
+    			MoveRight();
+    		break;
+    	}    
+	}   
 });
 
 
@@ -88,23 +98,118 @@ async function MoveUp(){
 			while(st != 0){
 				if(oneRow[st-1].value == -1){
 					oneRow[st].Move('Up');
-					await new Promise(r => setTimeout(r, 40));
 					oneRow[st-1].Stand(oneRow[st].value);
+					await new Promise(r => setTimeout(r,10));
 					oneRow[st].Default();
 					IsMove = true;
 				}
+				
 				if(oneRow[st-1].value == oneRow[st].value
 				   && oneRow[st-1].IsNew == false && oneRow[st].IsNew == false) {
 					oneRow[st].Move('Up');
-					await new Promise(r => setTimeout(r, 40));
 					oneRow[st-1].Stand(oneRow[st].value*2);
 					scopeManager.Update(oneRow[st-1].value);
 					oneRow[st-1].IsNew = true;
 					oneRow[st-1].Summ();
+					await new Promise(r => setTimeout(r, 10));
+					oneRow[st].Default();
+					IsMove = true;
+				}
+				
+				
+				st--;
+			}
+			//await new Promise(r => setTimeout(r,10));
+		}
+	}
+
+	if(IsMove){
+		Spawn(1);
+	}
+
+	IsPressKey = false;
+}
+
+async function MoveBottom(){
+
+	var IsMove = false;
+	ChangeStatusItem();
+
+	for(var col = 0; col < 4; col++){
+		var oneRow = GameMap.map(function(value,index){return value[col]});
+		for(var row = 2; row >= 0; row--){
+			if(oneRow[row].value == -1){
+				continue;
+			}
+			var st = row;
+			while(st != 3){
+				if(oneRow[st+1].value == -1){
+					oneRow[st].Move('Down');
+					oneRow[st+1].Stand(oneRow[st].value);
+					await new Promise(r => setTimeout(r, 10));
+					oneRow[st].Default();
+					IsMove = true;
+				}
+				if(oneRow[st+1].value == oneRow[st].value
+				   && oneRow[st+1].IsNew == false && oneRow[st].IsNew == false) {
+					oneRow[st].Move('Down');
+					oneRow[st+1].Stand(oneRow[st].value*2);
+					scopeManager.Update(oneRow[st+1].value);
+					oneRow[st+1].IsNew = true;
+					oneRow[st+1].Summ();
+					await new Promise(r => setTimeout(r, 10));
 					oneRow[st].Default();
 					IsMove = true;
 				}
 
+				st++;
+			}
+			//await new Promise(r => setTimeout(r,10));
+		}
+	}
+
+	if(IsMove){
+		Spawn(1);
+	}
+
+	IsPressKey = false;
+}
+
+async function MoveLeft(){
+
+	var IsMove = false;
+	ChangeStatusItem();
+
+	for(var row = 0; row < 4; row++){
+		var oneRow = GameMap[row];
+		for(var col = 1; col < 4; col++){
+			if(oneRow[col].value == -1){
+				continue;
+			}
+
+			var st = col;
+			while(st != 0){
+				if(oneRow[st-1].value == -1){
+					oneRow[st].Move('Left');
+					oneRow[st-1].Stand(oneRow[st].value);
+					await new Promise(r => setTimeout(r,10));
+					oneRow[st].Default();
+					IsMove = true;
+				}
+				
+				if(oneRow[st-1].value == oneRow[st].value
+				   && oneRow[st-1].IsNew == false && oneRow[st].IsNew == false) {
+					oneRow[st].Move('Left');
+					oneRow[st-1].Stand(oneRow[st].value*2);
+					scopeManager.Update(oneRow[st-1].value);
+					oneRow[st-1].IsNew = true;
+					oneRow[st-1].Summ();
+					await new Promise(r => setTimeout(r, 10));
+					oneRow[st].Default();
+					IsMove = true;
+				}
+				
+				
 				st--;
 			}
 		}
@@ -113,4 +218,53 @@ async function MoveUp(){
 	if(IsMove){
 		Spawn(1);
 	}
+
+	IsPressKey = false;
+}
+
+async function MoveRight(){
+
+	var IsMove = false;
+	ChangeStatusItem();
+
+	for(var row = 0; row < 4; row++){
+		var oneRow = GameMap[row];
+		for(var col = 2; col >= 0; col--){
+			if(oneRow[col].value == -1){
+				continue;
+			}
+
+			var st = col;
+			while(st != 3){
+				if(oneRow[st+1].value == -1){
+					oneRow[st].Move('Left');
+					oneRow[st+1].Stand(oneRow[st].value);
+					await new Promise(r => setTimeout(r,10));
+					oneRow[st].Default();
+					IsMove = true;
+				}
+				
+				if(oneRow[st+1].value == oneRow[st].value
+				   && oneRow[st+1].IsNew == false && oneRow[st].IsNew == false) {
+					oneRow[st].Move('Left');
+					oneRow[st+1].Stand(oneRow[st].value*2);
+					scopeManager.Update(oneRow[st+1].value);
+					oneRow[st+1].IsNew = true;
+					oneRow[st+1].Summ();
+					await new Promise(r => setTimeout(r, 10));
+					oneRow[st].Default();
+					IsMove = true;
+				}
+				
+				
+				st++;
+			}
+		}
+	}
+
+	if(IsMove){
+		Spawn(1);
+	}
+
+	IsPressKey = false;
 }

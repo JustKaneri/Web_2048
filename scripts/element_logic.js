@@ -41,7 +41,7 @@ class Item{
 		this.Cels.classList.add("anim_spawn");
 	}
 
-	Default(){
+  	Default(){
 		this.IsNew = false;
 		this.value = -1;
 		this.Cels.innerHTML = '';
@@ -65,10 +65,23 @@ class Item{
 
 		switch(direction){
 			case 'Up':
-				this.Cels.classList.add("anim_move_top");
+			/*
+				//this.Cels.classList.add("anim_move_top");
+			var animate	= this.Cels.animate([
+ 						  {transform: 'translate(0)'},
+  						  {transform: 'translate(0px, -50%)'},
+  						  {transform: 'translate(0px, -120%)'}
+						], 300);
+
+			animate.addEventListener('finish', () => {
+				this.Default();
+			});
+			*/
+
 			break;
 
 			case 'Dowm':
+				this.Cels.classList.add("anim_move_bottom");	
 			break;
 
 			case 'Left':
