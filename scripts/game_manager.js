@@ -98,8 +98,9 @@ async function MoveUp(){
 			while(st != 0){
 				if(oneRow[st-1].value == -1){
 					oneRow[st].Move('Up');
+					await new Promise(r => setTimeout(r,50));
 					oneRow[st-1].Stand(oneRow[st].value);
-					await new Promise(r => setTimeout(r,10));
+					//await new Promise(r => setTimeout(r,35));
 					oneRow[st].Default();
 					IsMove = true;
 				}
@@ -107,11 +108,12 @@ async function MoveUp(){
 				if(oneRow[st-1].value == oneRow[st].value
 				   && oneRow[st-1].IsNew == false && oneRow[st].IsNew == false) {
 					oneRow[st].Move('Up');
+					await new Promise(r => setTimeout(r,50));
 					oneRow[st-1].Stand(oneRow[st].value*2);
 					scopeManager.Update(oneRow[st-1].value);
 					oneRow[st-1].IsNew = true;
 					oneRow[st-1].Summ();
-					await new Promise(r => setTimeout(r, 10));
+					//await new Promise(r => setTimeout(r, 35));
 					oneRow[st].Default();
 					IsMove = true;
 				}
@@ -145,19 +147,19 @@ async function MoveBottom(){
 			while(st != 3){
 				if(oneRow[st+1].value == -1){
 					oneRow[st].Move('Down');
+					await new Promise(r => setTimeout(r,50));
 					oneRow[st+1].Stand(oneRow[st].value);
-					await new Promise(r => setTimeout(r, 10));
 					oneRow[st].Default();
 					IsMove = true;
 				}
 				if(oneRow[st+1].value == oneRow[st].value
 				   && oneRow[st+1].IsNew == false && oneRow[st].IsNew == false) {
 					oneRow[st].Move('Down');
+					await new Promise(r => setTimeout(r,50));
 					oneRow[st+1].Stand(oneRow[st].value*2);
 					scopeManager.Update(oneRow[st+1].value);
 					oneRow[st+1].IsNew = true;
 					oneRow[st+1].Summ();
-					await new Promise(r => setTimeout(r, 10));
 					oneRow[st].Default();
 					IsMove = true;
 				}
@@ -191,8 +193,8 @@ async function MoveLeft(){
 			while(st != 0){
 				if(oneRow[st-1].value == -1){
 					oneRow[st].Move('Left');
+					await new Promise(r => setTimeout(r,50));
 					oneRow[st-1].Stand(oneRow[st].value);
-					await new Promise(r => setTimeout(r,10));
 					oneRow[st].Default();
 					IsMove = true;
 				}
@@ -200,11 +202,11 @@ async function MoveLeft(){
 				if(oneRow[st-1].value == oneRow[st].value
 				   && oneRow[st-1].IsNew == false && oneRow[st].IsNew == false) {
 					oneRow[st].Move('Left');
+					await new Promise(r => setTimeout(r,50));
 					oneRow[st-1].Stand(oneRow[st].value*2);
 					scopeManager.Update(oneRow[st-1].value);
 					oneRow[st-1].IsNew = true;
 					oneRow[st-1].Summ();
-					await new Promise(r => setTimeout(r, 10));
 					oneRow[st].Default();
 					IsMove = true;
 				}
@@ -237,21 +239,21 @@ async function MoveRight(){
 			var st = col;
 			while(st != 3){
 				if(oneRow[st+1].value == -1){
-					oneRow[st].Move('Left');
+					oneRow[st].Move('Right');
+					await new Promise(r => setTimeout(r,50));
 					oneRow[st+1].Stand(oneRow[st].value);
-					await new Promise(r => setTimeout(r,10));
 					oneRow[st].Default();
 					IsMove = true;
 				}
 				
 				if(oneRow[st+1].value == oneRow[st].value
 				   && oneRow[st+1].IsNew == false && oneRow[st].IsNew == false) {
-					oneRow[st].Move('Left');
+					oneRow[st].Move('Right');
+					await new Promise(r => setTimeout(r,50));
 					oneRow[st+1].Stand(oneRow[st].value*2);
 					scopeManager.Update(oneRow[st+1].value);
 					oneRow[st+1].IsNew = true;
 					oneRow[st+1].Summ();
-					await new Promise(r => setTimeout(r, 10));
 					oneRow[st].Default();
 					IsMove = true;
 				}

@@ -65,13 +65,13 @@ class Item{
 
 		switch(direction){
 			case 'Up':
+			this.Cels.classList.add("anim_move_top");
 			/*
-				//this.Cels.classList.add("anim_move_top");
 			var animate	= this.Cels.animate([
  						  {transform: 'translate(0)'},
   						  {transform: 'translate(0px, -50%)'},
-  						  {transform: 'translate(0px, -120%)'}
-						], 300);
+  						  {transform: 'translate(0px, -119%)'}
+						], 50);
 
 			animate.addEventListener('finish', () => {
 				this.Default();
@@ -85,9 +85,11 @@ class Item{
 			break;
 
 			case 'Left':
+				this.Cels.classList.add("anim_move_left");
 			break ;
 
 			case 'Right':
+				this.Cels.classList.add("anim_move_right");
 			break;
 		}
 	}
