@@ -18,6 +18,22 @@
   }
 }
 
+.anim_visable
+{
+	animation-duration: 0.65s;
+	animation-name: visable;
+}
+
+@keyframes visable {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .anim_summ
 {
 	animation-duration: 0.5s;
