@@ -95,6 +95,70 @@ body
 	border: solid 2px black;
 }
 
+.game_end{
+	background-color: rgb(22 22 32 / 79%);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.game_win{
+	opacity: 0;
+}
+
+.game_end__title{
+	font-size: 3em;
+	color: rgba(240,223,207);
+}
+
+.game_win__controls{
+	width: 100%;
+	height: 25%;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game_end__button{
+	margin-right: 10%;
+	margin-left: 10%;
+	width: 30%;
+	height: 50%;
+	border-radius: 5px;
+	background-color: rgba(240,223,207);
+	font-size: 1em;
+
+	border: solid 2px rgb(22,22,32);
+}
+
+
+.game_end__button:hover{
+	transition: 0.5s;
+	background-color:rgb(22,22,32);
+	color: white;
+}
+
+.game_end__button:not(:hover){
+	transition: 0.5s;
+}
+
+.game_lose{
+	background-color: rgb(132 4 4 / 61%);
+	opacity: 0;
+}
+
+.game_lose__title{
+	text-shadow: 1px 1px 1px rgb(22,22,32);
+}
+
+.game_lose__button{
+	width: 40%;
+	height: 15%;
+	margin-top: 15%;
+}
+
 .game_map__row
 {
 	width: 100%;
@@ -150,6 +214,11 @@ body
 	{
 		width: 20em;
 		height: 20em;
+	}
+
+	.game_win__button{
+
+		font-size: 0.7em;
 	}
 }
 

@@ -81,6 +81,25 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="game_map game_end game_win">
+				<h3 class="game_win__title game_end__title">Вы победили</h3>
+				<div class="game_win__controls">
+					<button class="game_win__button game_end__button-restart game_end__button" type="button" onclick="Start();">
+						<b>Сначала</b>
+					</button>
+					<button class="game_win__button game_win__button-continue game_end__button" type="button" onclick="Continue();">
+						<b>Продолжить</b>
+					</button>
+				</div>
+			</div>
+
+			<div class="game_map game_lose game_end">
+				<h3 class="game_lose__title game_end__title">Вы проиграли</h3>
+				<button class="game_lose__button game_end__button-restart game_end__button" type="button" onclick="Start();">
+						<b>Сначала</b>
+				</button>
+			</div>
 		</div>
 		
 	</div>

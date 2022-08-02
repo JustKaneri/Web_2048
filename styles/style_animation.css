@@ -40,7 +40,7 @@
 
 .anim_move_top
 {
-	animation-duration: 50ms;
+	animation-duration: 200ms;
 	animation-name: move_top;
 }
 
@@ -64,7 +64,7 @@
 
 .anim_move_bottom
 {
-	animation-duration: 50ms;
+	animation-duration: 200ms;
 	animation-name: move_bottom;
 }
 
@@ -81,21 +81,21 @@
 	}
 
 	to{
-		transform: translate(0,119%);
+		transform: translate(0, 119%);
 		opacity: 1;
 	}
 }
 
 .anim_move_left
 {
-	animation-duration: 50ms;
+	animation-duration: 200ms;;
 	animation-name: move_left;
 }
 
 @keyframes move_left
 {
 	from{
-		opacity: 1;
+		transform: translate(0,0);
 	}
 
 	50%{
@@ -104,28 +104,28 @@
 	}
 
 	to{
-		transform: translate(-119%,0);
+		transform: translate(-115%,0);
 	}
 }
 
 .anim_move_right
 {
-	animation-duration: 50ms;
+	animation-duration: 200ms;
 	animation-name: move_right;
 }
 
 @keyframes move_right
 {	
 	from{
-		opacity: 1;
+		transform: translate(0,0px);
 	}
 
 	50%{
-		transform: translate(70%,0);
+		transform: translate(50%,0);
 	}
 
 
 	to{
-		transform: translate(119%,150);
+		transform: translate(115%,0);
 	}
 }

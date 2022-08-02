@@ -65,7 +65,7 @@ class Item{
 
 		switch(direction){
 			case 'Up':
-			this.Cels.classList.add("anim_move_top");
+				this.Cels.classList.add("anim_move_top");
 			/*
 			var animate	= this.Cels.animate([
  						  {transform: 'translate(0)'},
