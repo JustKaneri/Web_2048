@@ -11,6 +11,57 @@ var IsMove = false;
 var IsDisplayShow = false;
 var IsWin = false;
 var IsContinue = false;
+var touchStart = null; 
+var touchPosition = null; 
+
+document.addEventListener('touchstart', TouchStart,false);
+document.addEventListener('touchmove', TouchMove,false);
+document.addEventListener('touchend', TouchEnd,false);
+
+function TouchStart(e)
+{
+    touchStart = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+    touchPosition = { x: touchStart.x, y: touchStart.y };
+}
+
+function TouchMove(e)
+{
+    touchPosition = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+
+}
+
+function TouchEnd(e){
+
+  	var x =  touchStart.x - touchPosition.x
+  	var y = touchStart.y - touchPosition.y;
+
+  	if(IsPressKey == false && IsDisplayShow == false){
+
+		IsPressKey = true;
+
+
+	  	if(x > 200){
+	  		MoveLeft();
+	  	}
+	  	else
+	  	if(x < -200){
+	  		MoveRight();
+	  	}
+	  	else
+	  	if(y > 200){
+	  		MoveUp();
+	  	}
+	  	else
+	  	if(y < -200){
+	  		MoveBottom();
+	  	}
+	  	else{
+	  		IsPressKey = false;
+	  	}
+
+	}
+}
+
 
 window.addEventListener("keydown", function(e) {
     if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
