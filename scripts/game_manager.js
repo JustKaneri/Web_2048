@@ -6,6 +6,7 @@ var RestartBtn = document.getElementsByClassName("game_end__button-restart");
 var AllCels = document.getElementsByClassName("game_map__cels-value");
 var DisplayWin = document.getElementsByClassName("game_win");
 var DisplayLose = document.getElementsByClassName("game_lose");
+var Game = document.getElementsByClassName("game");
 var IsPressKey = false;
 var IsMove = false;
 var IsDisplayShow = false;
@@ -14,12 +15,13 @@ var IsContinue = false;
 var touchStart = null; 
 var touchPosition = null; 
 
-document.addEventListener('touchstart', TouchStart,false);
-document.addEventListener('touchmove', TouchMove,false);
-document.addEventListener('touchend', TouchEnd,false);
+Game[0].addEventListener('touchstart', TouchStart,false);
+Game[0].addEventListener('touchmove', TouchMove,false);
+Game[0].addEventListener('touchend', TouchEnd,false);
 
 function TouchStart(e)
 {
+	e.preventDefault();
     touchStart = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
     touchPosition = { x: touchStart.x, y: touchStart.y };
 }
@@ -40,19 +42,19 @@ function TouchEnd(e){
 		IsPressKey = true;
 
 
-	  	if(x > 200){
+	  	if(x > 50){
 	  		MoveLeft();
 	  	}
 	  	else
-	  	if(x < -200){
+	  	if(x < -50){
 	  		MoveRight();
 	  	}
 	  	else
-	  	if(y > 200){
+	  	if(y > 50){
 	  		MoveUp();
 	  	}
 	  	else
-	  	if(y < -200){
+	  	if(y < -50){
 	  		MoveBottom();
 	  	}
 	  	else{
