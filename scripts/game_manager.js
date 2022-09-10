@@ -15,9 +15,6 @@ var IsContinue = false;
 var touchStart = null; 
 var touchPosition = null; 
 
-Game[0].addEventListener('touchstart', TouchStart,false);
-Game[0].addEventListener('touchmove', TouchMove,false);
-Game[0].addEventListener('touchend', TouchEnd,false);
 
 function TouchStart(e)
 {
@@ -192,18 +189,58 @@ function CheckedFailde(){
 	}
 
 	if(FreeSpace == false){
-
 		var IsCanMove = false;
+		
+		for(let r = 0; r < 4; r++){
+			for(let c = 0; c < 4; c++){
 
-		for(let r = 1; r < 3; r++){
-			for(let c = 1; c < 3; c++){
-				if(GameMap[r][c] == GameMap[r-1][c] || 
-				   GameMap[r][c] == GameMap[r+1][c] ||
-				   GameMap[r][c] == GameMap[r][c-1] ||
-				   GameMap[r][c] == GameMap[r][c+1]){
-
-				   	IsCanMove = true;
+				if(r == 0 && c==0){
+					if(GameMap[r][c].value == GameMap[r+1][c].value ||
+					   GameMap[r][c].value == GameMap[r][c+1].value)
+					{
+						IsCanMove = true;
+						break;
+					}
 				}
+				else
+				if(r == 0 && c==3){
+					if(GameMap[r][c].value == GameMap[r+1][c].value ||
+					   GameMap[r][c].value == GameMap[r][c-1].value)
+					{
+						IsCanMove = true;
+						break;
+					}
+				}
+				else
+				if(r == 3 && c==0){
+					if(GameMap[r][c].value == GameMap[r-1][c].value ||
+					   GameMap[r][c].value == GameMap[r][c+1].value)
+					{
+						IsCanMove = true;
+						break;
+					}
+				}
+				else
+				if(r == 3 && c==3){
+					if(GameMap[r][c].value == GameMap[r-1][c].value||
+					   GameMap[r][c].value == GameMap[r][c-1].value)
+					{
+						IsCanMove = true;
+						break;
+					}
+				}
+				else
+				if(r > 0 && r < 3 && c >0 && c < 3){
+					if(GameMap[r][c].value == GameMap[r-1][c].value || 
+					   GameMap[r][c].value == GameMap[r+1][c].value ||
+					   GameMap[r][c].value == GameMap[r][c-1].value ||
+					   GameMap[r][c].value == GameMap[r][c+1].value){
+
+					   	IsCanMove = true;
+					  	 break;
+					}	
+				}
+				
 			}
 		}
 
@@ -234,9 +271,10 @@ async function MoveUp(){
 		ShowWinDisplay();
 	}
 
-	IsPressKey = false;
+	CheckedFailde();  
 
-	CheckedFailde();   
+	IsPressKey = false;
+ 
 }
 
 async function SubMoveTop(oneRow){
@@ -297,9 +335,10 @@ async function MoveBottom(){
 		ShowWinDisplay();
 	}
 
+	CheckedFailde();   
+
 	IsPressKey = false;
 
-	CheckedFailde();   
 }
 
 async function SubMoveBottom(oneRow){
@@ -358,9 +397,10 @@ async function MoveLeft(){
 		ShowWinDisplay();
 	}
 
-	IsPressKey = false;
+	CheckedFailde();  
 
-	CheckedFailde();   
+	IsPressKey = false;
+ 
 }
 
 async function SubMoveLeft(oneRow){
@@ -421,9 +461,9 @@ async function MoveRight(){
 		ShowWinDisplay();
 	}
 
-	IsPressKey = false;
+	CheckedFailde(); 
 
-	CheckedFailde();   
+	IsPressKey = false;  
 }
 
 async function SubMoveRight(oneRow){
